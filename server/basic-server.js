@@ -4,8 +4,10 @@ var http = require('http');
 var url = require('url');
 var handleRequest = require('./request-handler');
 var stubs = require('./Spec/Stubs.js');
+var express = require('express');
 
 var routes = {
+  '/': handleRequest.requestHandler,
   '/classes/messages': handleRequest.requestHandler,
   '/classes/messages?order=-createdAt': handleRequest.requestHandler
 };
@@ -44,7 +46,7 @@ var ip = '127.0.0.1';
 var server = http.createServer(function(request, response) {
   var urlParts = url.parse(request.url).pathname;
  
-  console.log(urlParts)
+  console.log(urlParts);
 
   var route = routes[urlParts]; //might be urlParts.pathname inside
   
