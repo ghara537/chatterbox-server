@@ -1,11 +1,13 @@
 /* Import node's http module: */
+
 var http = require('http');
 var url = require('url');
 var handleRequest = require('./request-handler');
-// var stubs = require('/Spec/Stubs.js');
+var stubs = require('./Spec/Stubs.js');
 
 var routes = {
-  '/classes/messages': handleRequest.requestHandler
+  '/classes/messages': handleRequest.requestHandler,
+  '/classes/messages?order=-createdAt': handleRequest.requestHandler
 };
 
 // Every server needs to listen on a port with a unique number. The
@@ -33,20 +35,25 @@ var ip = '127.0.0.1';
 
 // var server = http.createServer(function(request, response) {
 
-//   handleRequest.requestHandler(request, response);
+//   handleequest.requestHandler(request, response);
 //   console.log('REQUEST!!!', request);
 // });
 // var server = http.createServer(handleRequest.requestHandler);
 
 
 var server = http.createServer(function(request, response) {
-  //var urlParts = url.parse(request.url);
+  var urlParts = url.parse(request.url).pathname;
+ 
+  console.log(urlParts)
 
-  var route = routes['/classes/messages']; //might be urlParts.pathname inside
+  var route = routes[urlParts]; //might be urlParts.pathname inside
   
   if ( route ) {
     route(request, response);
   } else {
+    response.writeHead(404);
+  
+    response.end();
     console.log('oh nooooo');
   }
   
